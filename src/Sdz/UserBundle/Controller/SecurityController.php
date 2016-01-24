@@ -4,8 +4,8 @@
 namespace Sdz\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Security\Core\SecurityContext;
 use FOS\UserBundle\Controller\SecurityController as BaseController;
+
 
 class SecurityController extends BaseController
 {
@@ -19,7 +19,7 @@ class SecurityController extends BaseController
   {
     // Sur la page du formulaire de connexion, on utilise la vue classique "login"
     // Cette vue hérite du layout et ne peut donc être utilisée qu'individuellement
-    if ($this->container->get('request')->attributes->get('_route') == 'fos_user_security_login') {
+    if ($this->get('request_stack')->getCurrentRequest()->attributes->get('_route') == 'SdzUserBundle:Security:login') {
       $view = 'login';
     } else {
       // Mais sinon, il s'agit du formulaire de connexion intégré au menu, on utilise la vue "login_content"
@@ -27,8 +27,10 @@ class SecurityController extends BaseController
       $view = 'login_content';
     }
 
-    $template = sprintf('FOSUserBundle:Security:%s.html.%s', $view, $this->container->getParameter('fos_user.template.engine'));
+//     $engine = $this->container->getParameter('fos_user.template.engine');
+    $engine = 'twig';
+    $template = sprintf('FOSUserBundle:Security:%s.html.%s', $view, $engine);
 
-    return $this->container->get('templating')->renderResponse($template, $data);
+    return $this->get('templating')->renderResponse($template, $data);
   }
 }

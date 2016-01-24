@@ -5,26 +5,30 @@ namespace Sdz\BlogBundle\Form;
 use Sdz\BlogBundle\Entity\ArticleCompetence;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Sdz\BlogBundle\Entity\Competence;
+
 
 class ArticleCompetenceType extends AbstractType
 {
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
-      ->add('competence', 'entity', array(
-        'class'   => 'SdzBlogBundle:Competence'
+      ->add('competence', EntityType::class, array(
+        'class'   => Competence::class,
       ))
-      ->add('niveau', 'choice', array(
-        'choices' => ArticleCompetence::getNiveaux()
+      ->add('niveau', ChoiceType::class, array(
+        'choices' => ArticleCompetence::getNiveaux(),
       ))
     ;
   }
 
-  public function setDefaultOptions(OptionsResolverInterface $resolver)
+  public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults(array(
-      'data_class' => 'Sdz\BlogBundle\Entity\ArticleCompetence'
+        'data_class' => ArticleCompetence::class,
     ));
   }
 

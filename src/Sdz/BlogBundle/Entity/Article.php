@@ -6,7 +6,7 @@ namespace Sdz\BlogBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Sdz\BlogBundle\Entity\Article
@@ -14,7 +14,6 @@ use Symfony\Component\Validator\ExecutionContextInterface;
  * @ORM\Table(name="tut_article")
  * @ORM\Entity(repositoryClass="Sdz\BlogBundle\Entity\ArticleRepository")
  * @ORM\HasLifecycleCallbacks()
- * @Assert\Callback(methods={"contenuValide"})
  */
 class Article
 {
@@ -74,7 +73,7 @@ class Article
   private $categories;
 
   /**
-   * @ORM\OneToMany(targetEntity="Sdz\BlogBundle\Entity\Commentaire", mappedBy="article")
+   * @ORM\OneToMany(targetEntity="Sdz\BlogBundle\Entity\Commentaire", mappedBy="article", cascade={"remove"})
    */
   private $commentaires; // Ici commentaires prend un "s", car un article a plusieurs commentaires !
 
@@ -91,7 +90,7 @@ class Article
   public function __construct()
   {
     $this->publication  = true;
-    $this->date         = new \Datetime;
+    $this->date         = new \DateTime();
     $this->categories   = new \Doctrine\Common\Collections\ArrayCollection();
     $this->commentaires = new \Doctrine\Common\Collections\ArrayCollection();
     $this->articleCompetences = new \Doctrine\Common\Collections\ArrayCollection();
@@ -103,7 +102,7 @@ class Article
    */
   public function updateDate()
   {
-    $this->setDateEdition(new \Datetime());
+    $this->setDateEdition(new \DateTime());
   }
 
   public function getId()
@@ -111,7 +110,7 @@ class Article
     return $this->id;
   }
 
-  public function setDate(\Datetime $date)
+  public function setDate(\DateTime $date)
   {
     $this->date = $date;
   }
@@ -201,7 +200,7 @@ class Article
     return $this->commentaires;
   }
 
-  public function setDateEdition(\Datetime $dateEdition)
+  public function setDateEdition(\DateTime $dateEdition)
   {
     $this->dateEdition = $dateEdition;
   }
@@ -246,6 +245,9 @@ class Article
     return $this->user;
   }
 
+  /**
+   * @Assert\Callback
+   */
   public function contenuValide(ExecutionContextInterface $context)
   {
     $mots_interdits = array('échec', 'abandon');

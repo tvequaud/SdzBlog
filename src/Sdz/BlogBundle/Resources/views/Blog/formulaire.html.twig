@@ -6,11 +6,11 @@
 <h3>Formulaire d'article</h3>
 
 <div class="well">
-    <form method="post" {{ form_enctype(form) }}>
+    {{ form_start(form) }}
         {{ form_widget(form) }}
 
         <input type="submit" class="btn btn-primary" />
-    </form>
+    {{ form_end(form) }}
 </div>
 
 {# On charge la librairie jQuery. Ici, je la prends depuis le site jquery.com, mais si vous l'avez en local, changez simplement l'adresse. #}

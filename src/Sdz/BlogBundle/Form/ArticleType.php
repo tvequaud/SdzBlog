@@ -1,26 +1,34 @@
 <?php
-// src/Sdz/BlogBundle/Form/ArticleType.php
 
 namespace Sdz\BlogBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
+use Sdz\BlogBundle\Entity\Article;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Sdz\UserBundle\Entity\User;
+use Sdz\BlogBundle\Entity\Categorie;
 
 class ArticleType extends AbstractType
 {
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
-      ->add('date',        'datetime')
-      ->add('titre',       'text')
-      ->add('contenu',     'textarea')
-      ->add('image',       new ImageType(), array('required' => false))
-      ->add('categories',  'entity',        array(
-        'class'    => 'SdzBlogBundle:Categorie',
-        'property' => 'nom',
+      ->add('date',        DateTimeType::class)
+      ->add('titre',       TextType::class)
+      ->add('contenu',     TextareaType::class)
+      ->add('image',       ImageType::class, array('required' => false))
+      ->add('categories',  EntityType::class, array(
+        'class'    => Categorie::class,
+        'choice_label' => 'nom',
         'multiple' => true
       ))
       /*
@@ -29,8 +37,8 @@ class ArticleType extends AbstractType
        ** - 2e argument : type du champ, ici "collection" qui est une liste de quelque chose ;
        ** - 3e argument : tableau d'options du champ.
       */
-      ->add('articleCompetences', 'collection', array(
-          'type'         => new ArticleCompetenceType(),
+      ->add('articleCompetences', CollectionType::class, array(
+          'entry_type'         => ArticleCompetenceType::class,
           'allow_add'    => true,
           'allow_delete' => true,
           'by_reference' => false,
@@ -49,25 +57,25 @@ class ArticleType extends AbstractType
         }
         // 1. Si l'article n'est pas encore publié, on ajoute le champ publication
         if (false === $article->getPublication()) {
-          $event->getForm()->add('publication', 'checkbox', null, array('required' => false));
+          $event->getForm()->add('publication', CheckboxType::class, null, array('required' => false));
         } else { // Sinon, on le supprime
           $event->getForm()->remove('publication');
         }
 
         // 2. Si un User est attaché à l'article, on n'affiche pas le champ auteur
         if (null === $article->getUser()) {
-        	$event->getForm()->add('auteur', 'text');
+        	$event->getForm()->add('auteur', TextType::class);
         } else {
-        	$event->getForm()->add('user', 'entity', array('class' => 'SdzUserBundle:User'));
+        	$event->getForm()->add('user', EntityType::class, array('class' => User::class));
         }
       }
     );
   }
 
-  public function setDefaultOptions(OptionsResolverInterface $resolver)
+  public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults(array(
-      'data_class' => 'Sdz\BlogBundle\Entity\Article'
+        'data_class' => Article::class,
     ));
   }
 

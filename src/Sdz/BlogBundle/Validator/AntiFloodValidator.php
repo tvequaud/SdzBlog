@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class AntiFloodValidator extends ConstraintValidator
 {
@@ -17,9 +17,9 @@ class AntiFloodValidator extends ConstraintValidator
 
   // Les arguments déclarés dans la définition du service arrivent au constructeur
   // On doit les enregistrer dans l'objet pour pouvoir s'en resservir dans la méthode validate()
-  public function __construct(Request $request, EntityManager $em)
+  public function __construct(RequestStack $request, EntityManager $em)
   {
-    $this->request    = $request;
+    $this->request    = $request->getMasterRequest();
     $this->repository = $em->getRepository('SdzBlogBundle:Commentaire');
   }
 

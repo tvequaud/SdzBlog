@@ -1,3 +1,4 @@
+
 <?php
 
 use Symfony\Component\HttpKernel\Kernel;
@@ -5,42 +6,51 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 
 class AppKernel extends Kernel
 {
-    public function registerBundles()
-    {
-        $bundles = array(
-            new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
-            new Symfony\Bundle\SecurityBundle\SecurityBundle(),
-            new Symfony\Bundle\TwigBundle\TwigBundle(),
-            new Symfony\Bundle\MonologBundle\MonologBundle(),
-            new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
-            new Symfony\Bundle\AsseticBundle\AsseticBundle(),
-            new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
-            new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            new JMS\AopBundle\JMSAopBundle(),
-            new JMS\DiExtraBundle\JMSDiExtraBundle($this),
-            new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
-            new Sdz\BlogBundle\SdzBlogBundle(),
-            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
-            new Sdz\UserBundle\SdzUserBundle(),
-            new FOS\UserBundle\FOSUserBundle(),
-            new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
-            new Ornicar\AkismetBundle\OrnicarAkismetBundle(),
-        );
+	public function registerBundles()
+	{
+		$bundles = [
+			new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
+			new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+			new Symfony\Bundle\SecurityBundle\SecurityBundle(),
+			new Symfony\Bundle\TwigBundle\TwigBundle(),
+			new Symfony\Bundle\MonologBundle\MonologBundle(),
+			new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
+			new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
+			new FOS\UserBundle\FOSUserBundle(),
+			new Symfony\Bundle\AsseticBundle\AsseticBundle(),
+			new Sdz\BlogBundle\SdzBlogBundle(),
+			new Sdz\UserBundle\SdzUserBundle(),
+			new Ornicar\AkismetBundle\OrnicarAkismetBundle(),
+			new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
+		];
 
-        if (in_array($this->getEnvironment(), array('dev', 'test'))) {
-            $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
-            $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
-            $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
+		if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
+			$bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
+			$bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
+			$bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
+			$bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
+		}
 
-            $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
-            $bundles[] = new CoreSphere\ConsoleBundle\CoreSphereConsoleBundle();
-        }
+		return $bundles;
+	}
 
-        return $bundles;
-    }
+	public function getRootDir()
+	{
+		return __DIR__;
+	}
 
-    public function registerContainerConfiguration(LoaderInterface $loader)
-    {
-        $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
-    }
+	public function getCacheDir()
+	{
+		return dirname(__DIR__).'/var/cache/'.$this->getEnvironment();
+	}
+
+	public function getLogDir()
+	{
+		return dirname(__DIR__).'/var/logs/'.$this->getEnvironment();
+	}
+
+	public function registerContainerConfiguration(LoaderInterface $loader)
+	{
+		$loader->load($this->getRootDir().'/config/config_'.$this->getEnvironment().'.yml');
+	}
 }

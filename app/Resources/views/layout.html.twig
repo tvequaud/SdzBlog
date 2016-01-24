@@ -55,7 +55,7 @@
           {# On affiche le formulaire de login, sauf sur la page de connexion #}
           {% elseif app.request.attributes.get('_route') != 'fos_user_security_login' %}
             <h3>Identification</h3>
-            {{ render(controller('SdzUserBundle:Security:login')) }}
+			{{ render(controller('SdzUserBundle:Security:login')) }}
           {% endif %}
         </div>
 

@@ -3,17 +3,16 @@
 namespace Sdz\BlogBundle\Akismet;
 
 use Ornicar\AkismetBundle\Akismet\AkismetInterface;
-use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Sdz\BlogBundle\Entity\Commentaire;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 class AkismetValidator extends ConstraintValidator
 {
   private $akismet;
   private $isAuthenticated;
 
-  public function __construct(AkismetInterface $akismet, SecurityContext $securityContext)
+  public function __construct(AkismetInterface $akismet, AuthorizationChecker $securityContext)
   {
     $this->akismet = $akismet;
 
