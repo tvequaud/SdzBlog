@@ -14,6 +14,7 @@ class Competences implements FixtureInterface
     // Liste des noms de compétences à ajouter
     $noms = array('Doctrine', 'Formulaire', 'Twig');
 
+    $liste_competences = array();
     foreach ($noms as $i => $nom) {
       // On crée la compétence
       $liste_competences[$i] = new Competence();

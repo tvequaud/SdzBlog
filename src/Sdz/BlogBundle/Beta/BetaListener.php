@@ -14,7 +14,7 @@ class BetaListener
 
   public function __construct($dateFin)
   {
-    $this->dateFin = new \Datetime($dateFin);
+    $this->dateFin = new \DateTime($dateFin);
   }
 
   // Méthode pour ajouter le "beta" à une réponse
@@ -26,10 +26,7 @@ class BetaListener
     $html = '<span style="color: red; font-size: 0.5em;"> - Beta J-'.(int) $joursRestant.' !</span>';
 
     // Insertion du code dans la page, dans le <h1> du header
-    $content = preg_replace('#<h1>(.*?)</h1>#iU',
-                            '<h1>$1'.$html.'</h1>',
-                            $content,
-                            1);
+    $content = preg_replace('#<h1>(.*?)</h1>#iU', '<h1>$1'.$html.'</h1>', $content, 1);
 
     // Modification du contenu dans la réponse
     $response->setContent($content);
@@ -43,9 +40,9 @@ class BetaListener
     // On récupère la réponse depuis l'évènement
     $response = $event->getResponse();
 
-    if ($this->dateFin > new \Datetime()) {
+    if ($this->dateFin > new \DateTime()) {
       // On utilise notre méthode "reine"
-      $joursRestant = $this->dateFin->diff(new \Datetime())->days;
+      $joursRestant = $this->dateFin->diff(new \DateTime())->days;
       $response = $this->displayBeta($event->getResponse(), $joursRestant);
     }
 

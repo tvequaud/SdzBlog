@@ -58,7 +58,7 @@ class Commentaire
 
     public function __construct()
     {
-        $this->date = new \Datetime();
+        $this->date = new \DateTime();
     }
 
     /**
@@ -109,7 +109,7 @@ class Commentaire
      * @param datetime $date
      * @return Commentaire
      */
-    public function setDate(\Datetime $date)
+    public function setDate(\DateTime $date)
     {
         $this->date = $date;
         return $this;

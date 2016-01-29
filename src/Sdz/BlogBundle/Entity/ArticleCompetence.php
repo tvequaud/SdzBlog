@@ -5,12 +5,12 @@ namespace Sdz\BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="tut_article_competence")
- * @Assert\Callback(methods={"niveauValid"})
  */
 class ArticleCompetence
 {
@@ -77,7 +77,11 @@ class ArticleCompetence
     return $this->competence;
   }
 
-  // Callback pour valider la valeur du niveau
+
+  /**
+   * @Assert\Callback()
+   * @param ExecutionContextInterface $context
+   */
   public function isNiveauValid(ExecutionContextInterface $context)
   {
     if ((int) $this->niveau >= count(self::getNiveaux())) {

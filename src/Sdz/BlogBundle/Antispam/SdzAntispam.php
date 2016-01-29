@@ -56,11 +56,8 @@ class SdzAntispam extends \Twig_Extension
    */
   private function countLinks($text)
   {
-    preg_match_all(
-      '#(http|https|ftp)://([A-Z0-9][A-Z0-9_-]*(?:.[A-Z0-9][A-Z0-9_-]*)+):?(d+)?/?#i',
-      $text,
-      $matches);
-
+    $matches = array();
+    preg_match_all('#(http|https|ftp)://([A-Z0-9][A-Z0-9_-]*(?:.[A-Z0-9][A-Z0-9_-]*)+):?(d+)?/?#i', $text, $matches);
     return count($matches[0]);
   }
 
@@ -69,11 +66,8 @@ class SdzAntispam extends \Twig_Extension
    */
   private function countMails($text)
   {
-    preg_match_all(
-      '#[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}#i',
-      $text,
-      $matches);
-
+  	$matches = array();
+    preg_match_all('#[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}#i', $text, $matches);
     return count($matches[0]);
   }
 }

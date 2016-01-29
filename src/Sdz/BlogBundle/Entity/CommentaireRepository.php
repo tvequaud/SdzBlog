@@ -32,7 +32,7 @@ class CommentaireRepository extends EntityRepository
                ->where('c.ip = :ip')
                  ->setParameter('ip', $ip)
                ->andWhere('c.date >= :date')
-                 ->setParameter('date', new \Datetime('-'.$secondes.'seconds'));
+                 ->setParameter('date', new \DateTime('-'.$secondes.'seconds'));
 
     return (bool) $qb->getQuery()->getSingleScalarResult();
   }
