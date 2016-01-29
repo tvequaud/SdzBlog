@@ -27,3 +27,4 @@ assetic:
 
 ornicar_akismet:
     service: ornicar_akismet.akismet_stub
+    url: ~

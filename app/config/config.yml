@@ -123,13 +123,6 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
-# Activation de l'extension Twig intl
-services:
-    twig.extension.intl:
-       class: Twig_Extensions_Extension_Intl
-       tags:
-           - { name: twig.extension }
-
 fos_user:
     db_driver:     orm                        # Le type de BDD à utiliser, nous utilisons l'ORM Doctrine depuis le début
     firewall_name: main                       # Le nom du firewall duquel on utilisera ces utilisateurs

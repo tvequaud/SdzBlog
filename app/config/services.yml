@@ -1,6 +1,13 @@
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/book/service_container.html
+
+# Activation de l'extension Twig intl
 services:
+    twig.extension.intl:
+       class: Twig_Extensions_Extension_Intl
+       tags:
+           - { name: twig.extension }
+
 #    # KernelRequest listener
 #    extension.listener:
 #        class: Acme\DemoBundle\Listener\DoctrineExtensionListener

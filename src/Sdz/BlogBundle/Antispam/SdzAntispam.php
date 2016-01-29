@@ -39,7 +39,7 @@ class SdzAntispam extends \Twig_Extension
   public function getFunctions()
   {
     return array(
-      'checkIfSpam' => new \Twig_Function_Method($this, 'isSpam')
+      'checkIfSpam' => new \Twig_SimpleFunction('checkIfSpam', [$this, 'isSpam']),
     );
   }
 
